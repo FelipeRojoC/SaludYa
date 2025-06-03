@@ -1,0 +1,44 @@
+:root {
+    --sidebar-bg: #e6f7f8; /* Fondo del sidebar */
+    --sidebar-title: #007b7f; /* Color del título */
+    --sidebar-link: #007b7f; /* Color de los enlaces */
+    --sidebar-hover: #cce7e8; /* Color de hover */
+}
+
+#default-sidebar {
+    background-color: var(--sidebar-bg);
+}
+
+#default-sidebar h1 {
+    color: var(--sidebar-title);
+    font-size: 20px;
+    text-align: center;
+}
+
+#default-sidebar ul li a {
+    font-size: 16px;
+    color: var(--sidebar-link);
+    display: flex;
+    align-items: center;
+}
+
+#default-sidebar ul li a:hover {
+    background-color: var(--sidebar-hover);
+}
+
+#default-sidebar img {
+    margin-top: 20px;
+}
+
+button {
+    background-color: #ff9800; /* Botón cerrar sesión */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #e68a00;
+}
