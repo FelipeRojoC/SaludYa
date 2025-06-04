@@ -1,44 +1,61 @@
 :root {
-    --sidebar-bg: #e6f7f8; /* Fondo del sidebar */
-    --sidebar-title: #007b7f; /* Color del título */
-    --sidebar-link: #007b7f; /* Color de los enlaces */
-    --sidebar-hover: #cce7e8; /* Color de hover */
+  --sidebar-bg: #cbf3f0; /* Fondo del sidebar */
+  --hover-bg: #ff9f1d; /* Fondo del hover y botones activos */
+  --text-color: #000000; /* Color del texto */
+  --active-text-color: #ffffff; /* Color del texto cuando está activo */
+  --font-family: 'Arial', sans-serif; /* Tipografía del prototipo */
 }
 
 #default-sidebar {
-    background-color: var(--sidebar-bg);
+  background-color: var(--sidebar-bg);
+  font-family: var(--font-family);
 }
 
 #default-sidebar h1 {
-    color: var(--sidebar-title);
-    font-size: 20px;
-    text-align: center;
+  color: var(--text-color);
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 #default-sidebar ul li a {
-    font-size: 16px;
-    color: var(--sidebar-link);
-    display: flex;
-    align-items: center;
+  font-size: 16px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 25px; /* Rectángulo ovalado */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
 }
 
 #default-sidebar ul li a:hover {
-    background-color: var(--sidebar-hover);
+  background-color: var(--hover-bg);
+  color: var(--active-text-color);
+}
+
+#default-sidebar ul li a.active {
+  background-color: var(--hover-bg);
+  color: var(--active-text-color);
 }
 
 #default-sidebar img {
-    margin-top: 20px;
+  display: block;
+  margin: 20px auto;
+  width: 80px; /* Tamaño del logo */
 }
 
 button {
-    background-color: #ff9800; /* Botón cerrar sesión */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: var(--hover-bg); /* Botón cerrar sesión */
+  color: var(--active-text-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px; /* Rectángulo ovalado */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: var(--font-family);
 }
 
 button:hover {
-    background-color: #e68a00;
+  background-color: #e68a00; /* Hover más oscuro */
 }
