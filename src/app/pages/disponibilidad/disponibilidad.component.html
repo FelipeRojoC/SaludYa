@@ -1,0 +1,19 @@
+<div class="p-4 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4">Gestionar Disponibilidad</h2>
+  <form [formGroup]="horarioForm" (ngSubmit)="guardar()" class="space-y-4">
+    <div formArrayName="dias">
+      <div *ngFor="let dia of dias.controls; let i=index" [formGroupName]="i" class="border p-3 rounded">
+        <div class="grid grid-cols-2 gap-4 items-center">
+          <div class="font-semibold">{{ dia.get('nombre')?.value }}</div>
+          <div class="flex gap-2 items-center">
+            <label>Inicio: <input type="time" formControlName="inicio" class="border p-1"></label>
+            <label>Fin: <input type="time" formControlName="fin" class="border p-1"></label>
+            <label class="flex items-center gap-1"><input type="checkbox" formControlName="bloquear"> Bloquear</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="bg-[#21B6AC] text-white px-4 py-2 rounded">Guardar</button>
+  </form>
+  <p class="mt-4 text-red-600" *ngIf="mensaje">{{ mensaje }}</p>
+</div>
