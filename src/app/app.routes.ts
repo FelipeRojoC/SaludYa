@@ -10,14 +10,6 @@ import { DisponibilidadComponent } from './pages/disponibilidad/disponibilidad.c
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-@NgModule({
-  imports: [
-    HttpClientModule,
-    // Otros módulos
-  ],
-})
-export class AppModule {}
-
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },

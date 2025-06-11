@@ -1,77 +1,19 @@
-<body class="flex h-screen bg-gray-50">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-teal-50 flex flex-col justify-between p-6">
-    <div>
-      <h1 class="text-2xl font-bold text-teal-700 mb-8">Mi Portal<br/>Médico</h1>
-      <nav class="space-y-4">
-        <a href="#" class="block text-teal-700 hover:text-teal-500">Inicio</a>
-        <a href="#" class="block text-teal-700 hover:text-teal-500">Pacientes</a>
-        <a href="#" class="block text-teal-700 hover:text-teal-500">Historial</a>
-        <a href="#" class="block bg-orange-400 text-white rounded px-3 py-1">Disponibilidad</a>
-        <a href="#" class="block text-teal-700 hover:text-teal-500">Tratamientos</a>
-      </nav>
-    </div>
-    <div>
-      <nav class="space-y-2 mb-6">
-        <a href="#" class="block text-teal-700 hover:text-teal-500">Mi cuenta</a>
-        <a href="#" class="block text-teal-700 hover:text-teal-500">Soporte</a>
-      </nav>
-      <div class="text-center">
-        <img src="assets/SaludYa.png" alt="SaludYa Logo" class="w-12 h-12 mx-auto mb-2">
-        <span class="text-teal-700 font-bold">SaludYa</span>
-      </div>
-    </div>
-  </aside>
-
-  <!-- Main Content -->
-  <div class="flex-1 flex flex-col">
-    <!-- Header -->
-    <header class="bg-teal-600 text-white flex items-center justify-between px-8 py-4">
-      <div class="flex items-center space-x-4">
-        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.588 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-        </svg>
-        <div>
-          <div class="font-medium">Médico: Ivo Toloza</div>
-          <div class="text-sm">Especialidad: Kinesiología</div>
-        </div>
-      </div>
-      <button class="bg-orange-400 hover:bg-orange-500 px-4 py-2 rounded-lg">Cerrar sesión</button>
-    </header>
-
-    <!-- Body -->
-    <main class="p-8 overflow-auto">
-      <h2 class="text-3xl font-bold mb-6">Calendario de Selección de Disponibilidad</h2>
-      <div class="bg-white p-6 rounded-2xl shadow-md" [formGroup]="horarioForm">
-        <div formArrayName="dias">
-          <div *ngFor="let dia of dias.controls; let diaIndex = index" [formGroupName]="diaIndex">
-            <h4 class="uppercase font-semibold mb-2">{{ dia.get('nombre')?.value }}</h4>
-            <div class="flex flex-wrap gap-2">
-              <div formArrayName="horarios">
-                <div *ngFor="let horario of dia.get('horarios')?.controls; let horarioIndex = index" [formGroupName]="horarioIndex">
-                  <button
-                    class="px-4 py-1 border rounded-lg"
-                    [ngClass]="{
-                      'bg-teal-100': horario.get('seleccionado')?.value,
-                      'bg-gray-200': horario.get('bloqueado')?.value
-                    }"
-                    (click)="seleccionarHorario(diaIndex, horarioIndex)">
-                    {{ horario.get('hora')?.value }}
-                  </button>
-                </div>
-              </div>
-            </div>
+<div class="p-4 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4">Gestionar Disponibilidad</h2>
+  <form [formGroup]="horarioForm" (ngSubmit)="guardar()" class="space-y-4">
+    <div formArrayName="dias">
+      <div *ngFor="let dia of dias.controls; let i=index" [formGroupName]="i" class="border p-3 rounded">
+        <div class="grid grid-cols-2 gap-4 items-center">
+          <div class="font-semibold">{{ dia.get('nombre')?.value }}</div>
+          <div class="flex gap-2 items-center">
+            <label>Inicio: <input type="time" formControlName="inicio" class="border p-1"></label>
+            <label>Fin: <input type="time" formControlName="fin" class="border p-1"></label>
+            <label class="flex items-center gap-1"><input type="checkbox" formControlName="bloquear"> Bloquear</label>
           </div>
         </div>
-        <div class="flex justify-end space-x-4 mt-8">
-          <button class="px-6 py-2 bg-orange-400 text-white rounded-full hover:bg-orange-500 transition">
-            Bloquear
-          </button>
-          <button class="px-6 py-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition">
-            Seleccionar
-          </button>
-        </div>
       </div>
-    </main>
-  </div>
-</body>
+    </div>
+    <button type="submit" class="bg-[#21B6AC] text-white px-4 py-2 rounded">Guardar</button>
+  </form>
+  <p class="mt-4 text-red-600" *ngIf="mensaje">{{ mensaje }}</p>
+</div>

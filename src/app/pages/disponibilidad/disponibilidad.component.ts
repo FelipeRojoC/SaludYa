@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { appSettings } from '../../settings/appsettings';
 
 @Component({
   selector: 'app-disponibilidad',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule],
   templateUrl: './disponibilidad.component.html',
   styleUrls: ['./disponibilidad.component.css'],
 })
@@ -43,33 +53,9 @@ export class DisponibilidadComponent implements OnInit {
       this.dias.push(
         this.fb.group({
           nombre: [dia],
-          horarios: this.fb.array([
-            this.fb.group({
-              hora: ['09:15 AM', Validators.required],
-              seleccionado: [false],
-              bloqueado: [false],
-            }),
-            this.fb.group({
-              hora: ['09:30 AM', Validators.required],
-              seleccionado: [false],
-              bloqueado: [false],
-            }),
-            this.fb.group({
-              hora: ['09:45 AM', Validators.required],
-              seleccionado: [false],
-              bloqueado: [false],
-            }),
-            this.fb.group({
-              hora: ['10:00 AM', Validators.required],
-              seleccionado: [false],
-              bloqueado: [false],
-            }),
-            this.fb.group({
-              hora: ['10:30 AM', Validators.required],
-              seleccionado: [false],
-              bloqueado: [false],
-            }),
-          ]),
+          inicio: ['', Validators.required],
+          fin: ['', Validators.required],
+          bloquear: [false],
         })
       );
     });
@@ -78,9 +64,7 @@ export class DisponibilidadComponent implements OnInit {
   obtenerCitas() {
     this.http.get<any>(`${this.baseUrl}/appointments`).subscribe({
       next: (data) => (this.citas = data),
-      error: (err) => {
-        console.error('Error al obtener citas:', err);
-      },
+      error: () => {},
     });
   }
 
@@ -95,15 +79,18 @@ export class DisponibilidadComponent implements OnInit {
           });
         }
       },
-      error: (err) => {
-        console.error('Error al obtener disponibilidad:', err);
-      },
+      error: () => {},
     });
   }
 
   guardar() {
     if (!localStorage.getItem('token')) {
       this.mensaje = 'Debe iniciar sesión para modificar su disponibilidad.';
+      return;
+    }
+    if (this.horarioConCitas()) {
+      this.mensaje =
+        'No puede modificar horarios con citas programadas. Primero cancele o reagende las citas afectadas.';
       return;
     }
 
@@ -113,40 +100,27 @@ export class DisponibilidadComponent implements OnInit {
         next: () => {
           this.mensaje = 'Disponibilidad actualizada con éxito';
         },
-        error: (err) => {
-          console.error('Error al guardar disponibilidad:', err);
+        error: () => {
           this.mensaje = 'Error al actualizar la disponibilidad';
         },
       });
   }
 
-  bloquearHorario(diaIndex: number, horarioIndex: number) {
-    if (diaIndex < this.dias.length) {
-      const dia = this.dias.at(diaIndex);
-      if (dia) {
-        const horarios = dia.get('horarios') as FormArray;
-        if (horarioIndex < horarios.length) {
-          const horario = horarios.at(horarioIndex);
-          if (horario) {
-            horario.patchValue({ bloqueado: true });
-          }
-        }
+  private horarioConCitas(): boolean {
+    for (const cita of this.citas) {
+      const diaIndex = cita.dayIndex; // Se espera que el backend provea el índice del día
+      const control = this.dias.at(diaIndex);
+      if (!control) continue;
+      const inicio = control.get('inicio')?.value;
+      const fin = control.get('fin')?.value;
+      if (
+        cita.hora >= inicio &&
+        cita.hora <= fin &&
+        control.get('bloquear')?.value
+      ) {
+        return true;
       }
     }
-  }
-
-  seleccionarHorario(diaIndex: number, horarioIndex: number) {
-    if (diaIndex < this.dias.length) {
-      const dia = this.dias.at(diaIndex);
-      if (dia) {
-        const horarios = dia.get('horarios') as FormArray;
-        if (horarioIndex < horarios.length) {
-          const horario = horarios.at(horarioIndex);
-          if (horario) {
-            horario.patchValue({ seleccionado: true });
-          }
-        }
-      }
-    }
+    return false;
   }
 }
