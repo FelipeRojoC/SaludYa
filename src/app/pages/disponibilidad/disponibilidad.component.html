@@ -42,20 +42,24 @@
     <!-- Body -->
     <main class="p-8 overflow-auto">
       <h2 class="text-3xl font-bold mb-6">Calendario de Selección de Disponibilidad</h2>
-      <div class="bg-white p-6 rounded-2xl shadow-md">
-        <div *ngFor="let dia of dias.controls; let diaIndex = index" [formGroupName]="diaIndex">
-          <h4 class="uppercase font-semibold mb-2">{{ dia.get('nombre')?.value }}</h4>
-          <div class="flex flex-wrap gap-2">
-            <div *ngFor="let horario of dia.get('horarios')?.controls; let horarioIndex = index" [formGroupName]="horarioIndex">
-              <button
-                class="px-4 py-1 border rounded-lg"
-                [ngClass]="{
-                  'bg-teal-100': horario.get('seleccionado')?.value,
-                  'bg-gray-200': horario.get('bloqueado')?.value
-                }"
-                (click)="seleccionarHorario(diaIndex, horarioIndex)">
-                {{ horario.get('hora')?.value }}
-              </button>
+      <div class="bg-white p-6 rounded-2xl shadow-md" [formGroup]="horarioForm">
+        <div formArrayName="dias">
+          <div *ngFor="let dia of dias.controls; let diaIndex = index" [formGroupName]="diaIndex">
+            <h4 class="uppercase font-semibold mb-2">{{ dia.get('nombre')?.value }}</h4>
+            <div class="flex flex-wrap gap-2">
+              <div formArrayName="horarios">
+                <div *ngFor="let horario of dia.get('horarios')?.controls; let horarioIndex = index" [formGroupName]="horarioIndex">
+                  <button
+                    class="px-4 py-1 border rounded-lg"
+                    [ngClass]="{
+                      'bg-teal-100': horario.get('seleccionado')?.value,
+                      'bg-gray-200': horario.get('bloqueado')?.value
+                    }"
+                    (click)="seleccionarHorario(diaIndex, horarioIndex)">
+                    {{ horario.get('hora')?.value }}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -71,20 +75,3 @@
     </main>
   </div>
 </body>
-
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DisponibilidadComponent } from './disponibilidad.component';
-
-@NgModule({
-  declarations: [
-    DisponibilidadComponent
-  ],
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    DisponibilidadComponent
-  ]
-})
-export class DisponibilidadModule { }

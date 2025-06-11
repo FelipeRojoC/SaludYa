@@ -121,21 +121,31 @@ export class DisponibilidadComponent implements OnInit {
   }
 
   bloquearHorario(diaIndex: number, horarioIndex: number) {
-    const dia = this.dias.at(diaIndex);
-    if (dia) {
-      const horario = dia.get('horarios')?.at(horarioIndex);
-      if (horario) {
-        horario.patchValue({ bloqueado: true });
+    if (diaIndex < this.dias.length) {
+      const dia = this.dias.at(diaIndex);
+      if (dia) {
+        const horarios = dia.get('horarios') as FormArray;
+        if (horarioIndex < horarios.length) {
+          const horario = horarios.at(horarioIndex);
+          if (horario) {
+            horario.patchValue({ bloqueado: true });
+          }
+        }
       }
     }
   }
 
   seleccionarHorario(diaIndex: number, horarioIndex: number) {
-    const dia = this.dias.at(diaIndex);
-    if (dia) {
-      const horario = dia.get('horarios')?.at(horarioIndex);
-      if (horario) {
-        horario.patchValue({ seleccionado: true });
+    if (diaIndex < this.dias.length) {
+      const dia = this.dias.at(diaIndex);
+      if (dia) {
+        const horarios = dia.get('horarios') as FormArray;
+        if (horarioIndex < horarios.length) {
+          const horario = horarios.at(horarioIndex);
+          if (horario) {
+            horario.patchValue({ seleccionado: true });
+          }
+        }
       }
     }
   }
