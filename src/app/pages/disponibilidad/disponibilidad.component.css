@@ -1,1 +1,43 @@
-/* Estilos simples para el formulario de disponibilidad */
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+.bg-teal-50 {
+  background-color: #F0FDFA;
+}
+
+.bg-teal-600 {
+  background-color: #14B8A6;
+}
+
+.bg-orange-400 {
+  background-color: #FB923C;
+}
+
+.bg-orange-500 {
+  background-color: #F97316;
+}
+
+.text-teal-700 {
+  color: #0F766E;
+}
+
+.text-gray-600 {
+  color: #4B5563;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.transition {
+  transition: all 0.2s ease-in-out;
+}
